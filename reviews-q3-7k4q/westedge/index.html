@@ -540,6 +540,30 @@ body.review .step-h h2{font-size:30px}body.review .snap-sum{font-size:21px}
 .psb{display:inline-flex;align-items:center;gap:6px}.psb .t{width:52px;height:7px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden;display:block}.psb .t i{display:block;height:100%;border-radius:5px}.psb.g .t i{background:var(--green)}.psb.y .t i{background:var(--yellow)}.psb.r .t i{background:var(--red)}.psb b{font-size:12.5px;min-width:22px;text-align:right}
 .pbanner{padding:12px 16px;border-radius:12px;border:1px solid var(--line);font-size:13.5px;color:var(--fg2)}.pbanner b{color:var(--fg)}
 .pbanner.y{background:rgba(242,201,76,.08);border-color:rgba(242,201,76,.35)}.pbanner.g{background:var(--green-bg);border-color:rgba(62,207,142,.35)}
+
+/* grade cards */
+.gdist{display:flex;gap:6px;flex-wrap:wrap}.gd{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;border-radius:999px;background:rgba(255,255,255,.05);font-weight:700;font-size:13px}
+.gd b{display:grid;place-items:center;width:24px;height:24px;border-radius:7px;font-family:var(--narrow);font-size:15px;color:#0d0d0e}.gd.g b{background:var(--green)}.gd.y b{background:var(--yellow)}.gd.r b{background:var(--red)}
+.gcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+.gcard{display:flex;flex-direction:column;gap:12px;text-align:left;padding:16px;border-radius:16px;background:linear-gradient(165deg,rgba(255,255,255,.055),rgba(255,255,255,.02));border:1px solid var(--line);border-top:3px solid #3a3936;min-width:0;color:var(--fg)}
+.gcard.g{border-top-color:var(--green)}.gcard.y{border-top-color:var(--yellow)}.gcard.r{border-top-color:var(--red)}
+button.gcard{cursor:pointer;transition:border-color .15s,transform .15s}button.gcard:hover{border-color:var(--line2);transform:translateY(-1px)}
+.gc-top{display:flex;gap:10px;align-items:center}.gc-top .av{width:40px;height:40px;font-size:14px}
+.gc-n{flex:1;min-width:0}.gc-n b{display:block;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.gc-n span{font-size:12px;color:var(--fg3)}.gc-n i{font-style:normal}
+.gc-g{display:flex;flex-direction:column;align-items:center;gap:3px}.gc-g>span{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);font-weight:700}
+.gc-score{display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+.gc-num b{font-size:40px;font-weight:800;letter-spacing:-.03em;line-height:1}.gc-num span{font-size:13px;color:var(--fg3);margin-left:4px}
+.gc-rank{display:flex;flex-direction:column;align-items:flex-end;font-size:12px;color:var(--fg2);gap:2px}
+.gmeter{position:relative;height:8px;border-radius:6px;background:linear-gradient(90deg,rgba(240,112,106,.55) 0 60%,rgba(242,201,76,.55) 60% 80%,rgba(62,207,142,.55) 80% 100%)}
+.gmeter i{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:var(--fg);border:3px solid #111;transform:translate(-50%,-50%);box-shadow:0 0 0 1px rgba(255,255,255,.3)}
+.gc-tr{display:grid;grid-template-columns:1fr 1fr;gap:8px}.gc-tr>div{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:10px;background:rgba(0,0,0,.25);font-size:12px}.gc-tr span{color:var(--fg3)}
+.gc-subs{display:flex;flex-direction:column;gap:7px}
+.gs{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 28px;grid-template-areas:"l t b" "e e e";column-gap:10px;align-items:center;font-size:12.5px}
+.gs-l{grid-area:l;color:var(--fg2)}.gs-t{grid-area:t;height:7px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden;display:block}.gs-t i{display:block;height:100%;border-radius:5px}
+.gs.g .gs-t i{background:var(--green)}.gs.y .gs-t i{background:var(--yellow)}.gs.r .gs-t i{background:var(--red)}.gs b{grid-area:b;text-align:right}
+.gs em{grid-area:e;font-style:normal;font-size:11px;color:var(--fg3)}.gs em:empty{display:none}
+.gc-why{font-size:11.5px;color:var(--yellow);line-height:1.4}
+@media (max-width:720px){.gcards{grid-template-columns:minmax(0,1fr)}.gc-num b{font-size:34px}}
 </style>
 
 <div class="app">
@@ -1156,7 +1180,7 @@ function renderBar(){
   const isB=S.view!=='overview'&&S.view!=='profit';const b=BY[S.view];
   el.innerHTML=`<div class="mnav"><span class="brand-m">SHARP TOP</span>${isB?(S.mode==='owner'?`<button class="btn sm mback" data-go="overview">‹ Overview</button>`:'<span class="grow"></span>'):`<select class="sel" id="mnavSel" aria-label="Go to">${opts}</select>`}</div>
   ${isB||S.view==='profit'?'':`<div class="fg"><span class="lbl">Quarter</span><div class="seg" id="qSeg">${QS.map(q=>`<button data-q="${q}" class="${S.q===q?'on':''}">${q}</button>`).join('')}</div></div>`}
-  ${!isB?`<div class="fg"><span class="lbl">Location</span><div class="seg" id="lSeg">${['All',...LOCS].map(l=>`<button data-l="${l}" class="${S.loc===l?'on':''}">${l==='All'?'Both':l}</button>`).join('')}</div></div>`:''}
+  ${!isB&&!(MGR&&S.view==='profit')?`<div class="fg"><span class="lbl">Location</span><div class="seg" id="lSeg">${['All',...LOCS].map(l=>`<button data-l="${l}" class="${S.loc===l?'on':''}">${l==='All'?'Both':l}</button>`).join('')}</div></div>`:''}
   <span class="grow"></span>
   ${S.canOwner?`<div class="fg"><span class="lbl">View</span><div class="seg" id="mSeg"><button data-m="owner" class="${S.mode==='owner'?'on':''}">${MGR?'Manager':'Owner'}</button><button data-m="employee" class="${S.mode==='employee'?'on':''}">Employee</button></div></div>`:`<span class="pill n">Employee view</span>`}`;
 }
@@ -1940,7 +1964,7 @@ function renderProfit(v){
     <button class="btn sm" data-act="pEdit">${S.pedit?'Close cost settings':'Cost settings'}</button><button class="btn sm" data-act="pImp">${S.pimp?'Close import':'Import SQUIRE / payroll'}</button></div>${S.pedit?pSettingsH():''}${S.pimp?pImportH():''}</div>
   <div class="pbanner ${nFinal===co.length?'g':'y'}"><b>${nFinal===co.length?'All grades are final.':nFinal?`${nFinal} of ${co.length} grades are final; the rest are provisional.`:'All grades are provisional.'}</b> ${nFinal===co.length?'':'Payroll data is incomplete, so no grade is definitive yet. Dashed badges mean provisional; hover or tap one to see what’s missing.'}</div>
   <div class="card"><div class="chead"><div><h3>Data status</h3><div class="sub">Required inputs for a final grade</div></div></div><div class="pst">${st.map(([c,k,t])=>`<div class="pst-i ${c}"><i></i><div><b>${k}</b><span>${esc(t)}</span></div></div>`).join('')}</div></div>`;
-  h+=pScoreTable(list,true,`${S.loc==='All'?'Companywide':S.loc} grades`)+pLocLists(co);
+  h+=pScoreTable(list,true,`${S.loc==='All'?'Companywide ranking':S.loc+' ranking'}`)+(S.loc==='All'?pLocLists(co):'');
   h+=`<details class="more"><summary>How the score works</summary><div class="more-b">${pTargetsH()}</div></details>`;
   h+=`<details class="more" id="pfinD"><summary><span class="own">OWNER ONLY</span> Financial details: contribution dollars, costs, baseline</summary><div class="more-b" id="pfin"></div></details>`;
   v.innerHTML=h;
@@ -1948,6 +1972,22 @@ function renderProfit(v){
   if(S.pfinOpen){d.open=true;fill()}d.addEventListener('toggle',()=>{S.pfinOpen=d.open;if(d.open)fill()});
 }
 function pScoreTable(list,owner,title){
+  const dist={A:0,B:0,C:0,D:0,F:0};list.forEach(e=>{if(e.grade)dist[e.grade]++});
+  const card=e=>{const g=e.grade,cls=g?LCLS[g]:'n';const loc=e.b.loc==='Rosedale'?'Rosedale':'West Edge';
+    return `<${owner?`button class="gcard ${cls}" data-go="${e.b.id}"`:`div class="gcard ${cls}"`}>
+     <div class="gc-top">${avatar(e.b,'mini')}<div class="gc-n"><b>${esc(e.b.name)}</b><span><i style="color:${LC[e.b.loc]}">●</i> ${loc} · ${e.x.sh} hrs/wk</span></div>
+       <div class="gc-g">${gradeBadge(e,true)}<span>${e.final?'Final':'Provisional'}</span></div></div>
+     <div class="gc-score"><div class="gc-num"><b>${e.score==null?'—':Math.round(e.score)}</b><span>/ 100</span></div>
+       <div class="gc-rank">${owner&&S.loc==='All'?`<span>#${e.rank} overall</span>`:''}<span>#${e.lrank} of ${e.ln} at ${loc}</span></div></div>
+     <div class="gmeter" aria-hidden="true"><i style="left:${Math.max(0,Math.min(100,e.score||0))}%"></i></div>
+     <div class="gc-tr"><div><span>Last 4 wks</span>${trendH(e.t4)}</div><div><span>Last 12 wks</span>${trendH(e.t12)}</div></div>
+     <div class="gc-subs">${PK.map(k=>{const v=e.s[k],c=v==null?'n':v>=90?'g':v>=60?'y':'r',raw=e.c[k]==null?'':(owner||k==='util'||k==='rph')?PTGT[k].f(e.c[k]):'';return `<div class="gs ${c}"><span class="gs-l">${PTGT[k].lab}</span><span class="gs-t"><i style="width:${v==null?0:Math.max(3,v)}%"></i></span><b>${v==null?'—':Math.round(v)}</b><em>${raw}</em></div>`}).join('')}</div>
+     ${e.final?'':`<div class="gc-why" title="${esc(e.why.join('; '))}">Provisional: ${esc(e.why[0])}${e.why.length>1?` · +${e.why.length-1} more`:''}</div>`}
+    </${owner?'button':'div'}>`};
+  return `<div class="card"><div class="chead"><div><h3>${title}</h3><div class="sub">Score 0–100 against fixed targets. A 90+ · B 80–89 · C 70–79 · D 60–69 · F under 60. Dashed grade = provisional.</div></div>
+    <div class="gdist">${Object.entries(dist).map(([g,n])=>`<span class="gd ${LCLS[g]}"><b>${g}</b>${n}</span>`).join('')}</div></div>
+    <div class="gcards">${list.map(card).join('')}</div></div>`}
+function pScoreTableOLD(list,owner,title){
   const th=t=>`<th>${t}</th>`;
   let tb=`<div class="tw"><table><thead><tr><th class="l">#</th><th class="l">Barber</th><th>Grade</th><th>Score</th><th>4-wk</th><th>12-wk</th>${PK.map(k=>th(PTGT[k].lab)).join('')}<th class="l">Status</th></tr></thead><tbody>`;
   list.forEach(e=>{tb+=`<tr class="${owner?'click':''}" ${owner?`data-go="${e.b.id}"`:''}><td class="l"><b>${e.rank}</b> <span class="dim small">#${e.lrank} ${e.b.loc==='Rosedale'?'RS':'WE'}</span></td><td class="l"><div class="bname">${avatar(e.b,'mini')}<span>${esc(e.b.name)}<br><span class="dim small"><span style="color:${LC[e.b.loc]}">●</span> ${e.b.loc} · ${e.x.sh} hrs/wk</span></span></div></td>
@@ -1976,7 +2016,7 @@ function renderProfitM(v){if(!MSC){v.innerHTML='<div class="card empty">Performa
   const nF=co.filter(e=>e.final).length;
   v.innerHTML=`<div class="sec-title"><h2>Performance grades · ${esc(MSC.loc)}</h2><span class="note">${esc(MSC.period)} · ${esc(MSC.loc)} barbers only</span></div>
    <div class="pbanner ${nF===co.length?'g':'y'}"><b>${nF===co.length?'All grades are final.':'Grades are provisional.'}</b> ${nF===co.length?'':'The owner hasn’t connected complete payroll data yet, so these may change.'}</div>
-   ${pScoreTable(co,false,MSC.loc+' grades')}${pLocLists(co)}<details class="more"><summary>How the score works</summary><div class="more-b">${pTargetsH()}</div></details>`}
+   ${pScoreTable(co,false,MSC.loc+' grades')}<details class="more"><summary>How the score works</summary><div class="more-b">${pTargetsH()}</div></details>`}
 // ---- payroll register: components, tips, taxes (no double counting) ----
 function parseRegister(text){const rows=parseCSV(text).filter(r=>r.some(x=>x&&x.trim()));const H=rows[0].map(x=>x.toLowerCase().trim());
   const f=re=>H.findIndex(h=>re.test(h));
